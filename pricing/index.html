@@ -11,15 +11,7 @@
 html{scroll-behavior:smooth;overflow-x:hidden;font-size:16px;width:100%;max-width:100%}
 body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;width:100%;min-height:100vh;margin:0;padding:0;max-width:100%;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-#bwPattern{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.bw-node{position:absolute;opacity:0;animation:bwPulse var(--dur,6s) var(--del,0s) ease-in-out infinite}
-.bw-node svg{display:block}
-@keyframes bwPulse{
-  0%{opacity:0;transform:scale(var(--s0,.8)) rotate(var(--r,0deg))}
-  30%{opacity:var(--peak,.08)}
-  60%{opacity:var(--peak,.08)}
-  100%{opacity:0;transform:scale(var(--s1,1.05)) rotate(var(--r,0deg))}
-}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .wrap{position:relative;z-index:1;width:100%}
 .inner{width:100%;max-width:var(--max);margin:0 auto;padding:0 6%}
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid transparent;transition:background .3s,border-color .3s;width:100%;background:rgba(0,17,51,.96);border-color:var(--g900);backdrop-filter:blur(12px)}
@@ -53,8 +45,8 @@ p.lead{font-size:.95rem;line-height:1.65;color:var(--white)}
 .cat-title::before{content:'';flex:1;height:1px;background:var(--g800)}
 .cat-title::after{content:'';flex:1;height:1px;background:var(--g800)}
 .price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--g800)}
-.plan{background:var(--black);padding:28px 24px;transition:background .2s}
-.plan:hover{background:var(--g950)}
+.plan{background:rgba(0,17,51,0.85);padding:28px 24px;transition:background .2s;backdrop-filter:blur(2px)}
+.plan:hover{background:rgba(0,26,68,0.92)}
 .plan.featured{background:var(--white)}
 .plan.featured h4{color:var(--black)}
 .plan.featured p,.plan.featured .pf,.plan.featured .plan-per{color:#444}
@@ -70,21 +62,21 @@ p.lead{font-size:.95rem;line-height:1.65;color:var(--white)}
 .plan.featured .plan-divider{border-color:#ddd}
 .pf{font-size:11px;color:var(--white);padding:4px 0 4px 14px;position:relative;opacity:.75}
 .pf::before{content:'—';position:absolute;left:0;color:rgba(248,249,250,.3);font-size:10px}
-.plan-btn{display:block;width:100%;margin-top:20px;padding:10px;text-align:center;font-size:.78rem;font-weight:600;border-radius:4px;cursor:pointer;transition:border-color .2s,color .2s,background .2s;border:1px solid var(--g800);color:var(--white);background:transparent;font-family:'Inter',sans-serif}
+.plan-btn{display:block;width:100%;margin-top:20px;padding:10px;text-align:center;font-size:.78rem;font-weight:600;border-radius:4px;cursor:pointer;transition:border-color .2s,color .2s,background .2s;border:1px solid var(--g800);color:var(--white);background:transparent;font-family:'Inter',sans-serif;text-decoration:none}
 .plan-btn:hover{border-color:var(--gold);color:var(--gold)}
 .plan.featured .plan-btn{background:var(--black);color:var(--white);border-color:var(--black)}
 .plan.featured .plan-btn:hover{background:var(--gold);color:var(--black);border-color:var(--gold)}
-.inline-link{color:var(--white);font-weight:600;border-bottom:1px solid var(--gold);padding-bottom:1px;cursor:pointer;transition:color .15s}
+.inline-link{color:var(--white);font-weight:600;border-bottom:1px solid var(--gold);padding-bottom:1px;cursor:pointer;transition:color .15s;text-decoration:none}
 .inline-link:hover{color:var(--gold)}
 .btn-gold{background:transparent;color:var(--gold);padding:13px 28px;border-radius:4px;font-weight:600;font-size:.85rem;cursor:pointer;border:1px solid var(--gold);transition:background .2s,color .2s;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block}
 .btn-gold:hover{background:var(--gold);color:var(--black)}
-.book-call-wrap{background:var(--g950);border:1px solid var(--g900);border-radius:6px;padding:36px;transition:border-color .2s}
+.book-call-wrap{background:rgba(0,26,68,0.82);border:1px solid var(--g900);border-radius:6px;padding:36px;transition:border-color .2s;backdrop-filter:blur(4px)}
 .book-call-wrap:hover{border-color:var(--blue)}
-footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
+footer{border-top:1px solid var(--g900);padding:36px 0;width:100%;position:relative}
+footer::before{content:'';position:absolute;inset:0;background:rgba(0,17,51,0.92);backdrop-filter:blur(3px);z-index:0;pointer-events:none}
+footer .footer-inner{position:relative;z-index:1}
 .footer-inner{max-width:var(--max);margin:0 auto;padding:0 6%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
-.footer-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
-.footer-logo-svg{height:28px;width:auto;display:block}
-.footer-logo-text{font-size:.95rem;font-weight:800;letter-spacing:-.5px;color:var(--white)}
+.footer-logo-text{font-size:.95rem;font-weight:800;letter-spacing:-.5px;color:var(--white);text-decoration:none}
 .footer-logo-text span{color:var(--gold)}
 .footer-copy{font-size:.7rem;color:var(--white);text-align:center;white-space:nowrap;opacity:.5}
 .footer-links{display:flex;gap:20px;justify-content:flex-end;flex-wrap:wrap}
@@ -102,34 +94,34 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
 </head>
 <body>
 
-<div id="bwPattern"></div>
+<canvas id="bgCanvas"></canvas>
 
 <div class="wrap">
 <nav id="nav">
-  <a class="logo" href="https://charming-potato-587362.framer.app/">
+  <a class="logo" href="https://boxescrew-svg.github.io/BoxworksSite/">
     <svg class="logo-svg" viewBox="0 0 960.99 1047.95" xmlns="http://www.w3.org/2000/svg" aria-label="Boxworks">
       <path fill="#F8F9FA" d="M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z" transform="translate(-59.15 -16.05)"/>
     </svg>
     <span class="logo-text"><span>B</span>oxworks</span>
   </a>
   <div class="nav-links">
-    <a href="https://charming-potato-587362.framer.app/services">Servizi</a>
-    <a href="https://charming-potato-587362.framer.app/casestudies">Risultati</a>
-    <a href="https://charming-potato-587362.framer.app/about">About</a>
-    <a href="https://charming-potato-587362.framer.app/pricing">Prezzi</a>
-    <a href="https://charming-potato-587362.framer.app/contact">Contatti</a>
+    <a href="https://boxescrew-svg.github.io/BoxworksSite/services/">Servizi</a>
+    <a href="https://boxescrew-svg.github.io/BoxworksSite/casestudies/">Risultati</a>
+    <a href="https://boxescrew-svg.github.io/BoxworksSite/about/">About</a>
+    <a href="https://boxescrew-svg.github.io/BoxworksSite/pricing/">Prezzi</a>
+    <a href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Contatti</a>
   </div>
-  <a class="nav-cta" href="https://charming-potato-587362.framer.app/contact">Parliamo</a>
+  <a class="nav-cta" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Parliamo</a>
   <button class="ham" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mob" id="mob">
   <span class="mob-close" onclick="closeMob()">&#215;</span>
-  <a href="https://charming-potato-587362.framer.app/" onclick="closeMob()">Home</a>
-  <a href="https://charming-potato-587362.framer.app/services" onclick="closeMob()">Servizi</a>
-  <a href="https://charming-potato-587362.framer.app/casestudies" onclick="closeMob()">Risultati</a>
-  <a href="https://charming-potato-587362.framer.app/about" onclick="closeMob()">About</a>
-  <a href="https://charming-potato-587362.framer.app/pricing" onclick="closeMob()">Prezzi</a>
-  <a href="https://charming-potato-587362.framer.app/contact" onclick="closeMob()">Contatti</a>
+  <a href="https://boxescrew-svg.github.io/BoxworksSite/" onclick="closeMob()">Home</a>
+  <a href="https://boxescrew-svg.github.io/BoxworksSite/services/" onclick="closeMob()">Servizi</a>
+  <a href="https://boxescrew-svg.github.io/BoxworksSite/casestudies/" onclick="closeMob()">Risultati</a>
+  <a href="https://boxescrew-svg.github.io/BoxworksSite/about/" onclick="closeMob()">About</a>
+  <a href="https://boxescrew-svg.github.io/BoxworksSite/pricing/" onclick="closeMob()">Prezzi</a>
+  <a href="https://boxescrew-svg.github.io/BoxworksSite/contact/" onclick="closeMob()">Contatti</a>
 </div>
 
 <section style="padding-top:120px">
@@ -140,9 +132,10 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
       <p class="lead" style="margin-top:16px;max-width:520px">Nessun costo nascosto. Ogni piano include report mensile, accesso alla dashboard e un referente dedicato.</p>
     </div>
 
+    <!-- Social Media Marketing -->
     <div class="cat-group">
       <div class="cat-title">Social Media Marketing</div>
-      <div class="price-grid">
+      <div class="price-grid" style="grid-template-columns:repeat(2,1fr)">
         <div class="plan">
           <h4>Social Base</h4>
           <div class="plan-price">€600</div>
@@ -153,7 +146,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">8-15 post al mese</div>
           <div class="pf">Grafiche semplici incluse</div>
           <div class="pf">Report mensile</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
         <div class="plan featured">
           <h5 style="margin-bottom:4px">Il più scelto</h5>
@@ -167,14 +160,15 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Video inclusi</div>
           <div class="pf">ADV base inclusa</div>
           <div class="pf">Analisi avanzata</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
       </div>
     </div>
 
+    <!-- SEO -->
     <div class="cat-group">
       <div class="cat-title">Search Engine Optimization</div>
-      <div class="price-grid">
+      <div class="price-grid" style="grid-template-columns:repeat(2,1fr)">
         <div class="plan">
           <h4>SEO Base</h4>
           <div class="plan-price">€1.000</div>
@@ -185,7 +179,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Ottimizzazione on-page</div>
           <div class="pf">2 articoli blog al mese</div>
           <div class="pf">Tracking e report</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
         <div class="plan">
           <h4>SEO Advanced</h4>
@@ -197,14 +191,15 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Content plan completo</div>
           <div class="pf">Link building mensile</div>
           <div class="pf">Local SEO</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
       </div>
     </div>
 
+    <!-- PPC -->
     <div class="cat-group">
       <div class="cat-title">Performance Advertising (PPC)</div>
-      <div class="price-grid">
+      <div class="price-grid" style="grid-template-columns:repeat(2,1fr)">
         <div class="plan">
           <h4>PPC Basic</h4>
           <div class="plan-price">€1.200</div>
@@ -214,7 +209,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">1 piattaforma ADV</div>
           <div class="pf">Setup campagne</div>
           <div class="pf">Ottimizzazione settimanale</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
         <div class="plan featured">
           <h4>PPC Full Stack</h4>
@@ -225,14 +220,15 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Google + Meta + TikTok</div>
           <div class="pf">A/B Testing continuo</div>
           <div class="pf">Creatività incluse</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
       </div>
     </div>
 
+    <!-- Email & Automazioni -->
     <div class="cat-group">
       <div class="cat-title">Email Marketing &amp; Automazioni</div>
-      <div class="price-grid">
+      <div class="price-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="plan">
           <h4>Email Marketing</h4>
           <div class="plan-price">€500</div>
@@ -242,7 +238,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">2-4 invii al mese</div>
           <div class="pf">Template grafico</div>
           <div class="pf">CRM base incluso</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
         <div class="plan">
           <h4>Funnel &amp; Automazioni</h4>
@@ -253,7 +249,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Landing page</div>
           <div class="pf">CRM + sequenza email</div>
           <div class="pf">Pixel + tag tracking</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Richiedi</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Richiedi</a>
         </div>
         <div class="plan featured">
           <h4>Full Stack Marketing</h4>
@@ -266,14 +262,15 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">PPC multipiattaforma</div>
           <div class="pf">Email marketing</div>
           <div class="pf">Report e consulenze</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Inizia</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Inizia</a>
         </div>
       </div>
     </div>
 
+    <!-- Siti Web -->
     <div class="cat-group">
       <div class="cat-title">Siti Web &amp; Infrastruttura Digitale</div>
-      <div class="price-grid">
+      <div class="price-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="plan">
           <h4>Sito Web Base</h4>
           <div class="plan-price">€2.000</div>
@@ -283,7 +280,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">3-5 pagine</div>
           <div class="pf">WordPress + responsive</div>
           <div class="pf">SEO base inclusa</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Richiedi</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Richiedi</a>
         </div>
         <div class="plan">
           <h4>Sito E-Commerce</h4>
@@ -294,7 +291,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Shopify / WooCommerce</div>
           <div class="pf">20 prodotti inclusi</div>
           <div class="pf">Gateway + pixel</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Richiedi</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Richiedi</a>
         </div>
         <div class="plan">
           <h4>Sistema CRM / Funnel</h4>
@@ -305,14 +302,15 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">CRM custom</div>
           <div class="pf">Form + automazioni</div>
           <div class="pf">Trigger comportamentali</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Richiedi</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Richiedi</a>
         </div>
       </div>
     </div>
 
+    <!-- Analytics & IA -->
     <div class="cat-group">
       <div class="cat-title">Analytics &amp; Intelligenza Artificiale</div>
-      <div class="price-grid">
+      <div class="price-grid" style="grid-template-columns:repeat(2,1fr)">
         <div class="plan">
           <h4>Analytics &amp; Dashboard</h4>
           <div class="plan-price">€6.000</div>
@@ -323,7 +321,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Integrazione GA4</div>
           <div class="pf">KPI strategici</div>
           <div class="pf">IA su dati</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Richiedi</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Richiedi</a>
         </div>
         <div class="plan featured">
           <h4>Intelligenza Artificiale</h4>
@@ -335,13 +333,13 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
           <div class="pf">Integrazione GA4</div>
           <div class="pf">KPI strategici</div>
           <div class="pf">Modelli IA su dati</div>
-          <button class="plan-btn" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Richiedi</button>
+          <a class="plan-btn" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Richiedi</a>
         </div>
       </div>
     </div>
 
     <div style="margin-top:16px;text-align:center">
-      <p style="font-size:.82rem;opacity:.7">Non sei sicuro di quale piano sia giusto per te? <span class="inline-link" onclick="location.href='https://charming-potato-587362.framer.app/contact'">Prenota una chiamata gratuita</span> — ti aiutiamo a scegliere.</p>
+      <p style="font-size:.82rem;opacity:.7">Non sei sicuro di quale piano sia giusto per te? <a class="inline-link" href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Prenota una chiamata gratuita</a> — ti aiutiamo a scegliere.</p>
     </div>
   </div>
 </section>
@@ -352,25 +350,20 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
       <div class="section-label" style="justify-content:center;margin-bottom:16px">Book a call</div>
       <h3 style="margin-bottom:12px;font-size:clamp(1rem,2vw,1.3rem)">Trenta minuti.<br>Strategia personalizzata.</h3>
       <p style="font-size:.85rem;margin-bottom:24px">Una chiamata senza impegno per capire il tuo mercato, i tuoi obiettivi e quale sistema di crescita ha senso costruire.</p>
-      <a href="https://charming-potato-587362.framer.app/contact" class="btn-gold">Prenota la chiamata</a>
+      <a href="https://boxescrew-svg.github.io/BoxworksSite/contact/" class="btn-gold">Prenota la chiamata</a>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-inner">
-    <a class="footer-logo" href="https://charming-potato-587362.framer.app/">
-      <svg class="footer-logo-svg" viewBox="0 0 960.99 1047.95" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#F8F9FA" d="M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6Z" transform="translate(-59.15 -16.05)"/>
-      </svg>
-      <span class="footer-logo-text"><span>B</span>oxworks</span>
-    </a>
+    <a class="footer-logo-text" href="https://boxescrew-svg.github.io/BoxworksSite/"><span>B</span>oxworks</a>
     <div class="footer-copy">© 2025 Boxworks Srl · Roma, Italia</div>
     <div class="footer-links">
-      <a href="https://charming-potato-587362.framer.app/">Home</a>
-      <a href="https://charming-potato-587362.framer.app/services">Servizi</a>
-      <a href="https://charming-potato-587362.framer.app/casestudies">Risultati</a>
-      <a href="https://charming-potato-587362.framer.app/contact">Contatti</a>
+      <a href="https://boxescrew-svg.github.io/BoxworksSite/">Home</a>
+      <a href="https://boxescrew-svg.github.io/BoxworksSite/services/">Servizi</a>
+      <a href="https://boxescrew-svg.github.io/BoxworksSite/casestudies/">Risultati</a>
+      <a href="https://boxescrew-svg.github.io/BoxworksSite/contact/">Contatti</a>
     </div>
   </div>
 </footer>
@@ -380,23 +373,84 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
 function openMob(){document.getElementById('mob').classList.add('open')}
 function closeMob(){document.getElementById('mob').classList.remove('open')}
 
-(function initBWPattern(){
-  const container = document.getElementById('bwPattern');
-  const COUNT = 28;
-  const PATH = `M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z`;
-  const VIEWBOX = '0 0 960.99 1047.95';
-  const FILL_COLORS = ['#F8F9FA','#D4AF37','#0047FF'];
-  const FILL_WEIGHTS = [0.65, 0.20, 0.15];
-  function weightedColor(){const r=Math.random();let c=0;for(let i=0;i<FILL_WEIGHTS.length;i++){c+=FILL_WEIGHTS[i];if(r<c)return FILL_COLORS[i]}return FILL_COLORS[0]}
-  function rand(min,max){return Math.random()*(max-min)+min}
-  for(let i=0;i<COUNT;i++){
-    const size=rand(28,90),x=rand(-4,96),y=rand(-4,100),rot=rand(-30,30),dur=rand(5,14),del=rand(0,12),peak=rand(0.04,0.12),s0=rand(0.75,0.95),s1=rand(1.00,1.15),color=weightedColor();
-    const div=document.createElement('div');
-    div.className='bw-node';
-    div.style.cssText=[`left:${x}%`,`top:${y}%`,`width:${size}px`,`height:${size}px`,`--dur:${dur.toFixed(2)}s`,`--del:${del.toFixed(2)}s`,`--peak:${peak.toFixed(3)}`,`--s0:${s0.toFixed(3)}`,`--s1:${s1.toFixed(3)}`,`--r:${rot.toFixed(1)}deg`].join(';');
-    div.innerHTML=`<svg viewBox="${VIEWBOX}" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path fill="${color}" d="${PATH}" transform="translate(-59.15 -16.05)"/></svg>`;
-    container.appendChild(div);
+(function(){
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const LOGO_PATH_STR = "M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z";
+
+  const logoPath2D = new Path2D(LOGO_PATH_STR);
+  const COLS = 24, ROWS = 12, VB_W = 960.99, VB_H = 1047.95;
+  let wavePos = 1.0, waveDir = -1;
+  const WAVE_SPEED = 0.00035, WAVE_WIDTH = 0.12;
+  const PEAK_ALPHA = 0.18, REST_ALPHA = 0.04;
+  let logoSize = 0, colXPositions = [], rowYPositions = [], dpr = 1;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    computeGrid();
   }
+  function computeGrid() {
+    const W = window.innerWidth, H = window.innerHeight;
+    logoSize = W / (COLS * 0.85);
+    const colSpacing = W / COLS;
+    colXPositions = [];
+    for (let c = 0; c < COLS; c++) colXPositions.push(colSpacing * c + colSpacing * 0.5);
+    const rowSpacing = H / (ROWS - 1);
+    rowYPositions = [];
+    for (let r = 0; r < ROWS; r++) rowYPositions.push(rowSpacing * r);
+  }
+  function drawLogo(cx, cy, alpha, scale) {
+    if (alpha < 0.002) return;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(scale, scale);
+    const s = logoSize / VB_W;
+    ctx.scale(s, s);
+    ctx.translate(-VB_W / 2 - (-59.15), -VB_H / 2 - (-16.05));
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#F9FAFB';
+    ctx.fill(logoPath2D);
+    ctx.restore();
+  }
+  function getColumnAlpha(c) {
+    const colFrac = c / (COLS - 1), dist = Math.abs(colFrac - wavePos);
+    if (dist > WAVE_WIDTH * 2) return REST_ALPHA;
+    const t = 1 - (dist / (WAVE_WIDTH * 2)), peak = t * t * (3 - 2 * t);
+    return REST_ALPHA + (PEAK_ALPHA - REST_ALPHA) * peak;
+  }
+  function getColumnScale(c) {
+    const colFrac = c / (COLS - 1), dist = Math.abs(colFrac - wavePos);
+    if (dist > WAVE_WIDTH * 2) return 0.85;
+    const t = 1 - (dist / (WAVE_WIDTH * 2)), peak = t * t * (3 - 2 * t);
+    return 0.85 + (1.3 - 0.85) * peak;
+  }
+  function draw() {
+    const W = window.innerWidth, H = window.innerHeight;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#001133';
+    ctx.fillRect(0, 0, W, H);
+    for (let c = 0; c < COLS; c++) {
+      const alpha = getColumnAlpha(c), scale = getColumnScale(c), cx = colXPositions[c];
+      const isOdd = c % 2 === 1, logoH = logoSize * (VB_H / VB_W), yOffset = isOdd ? logoH * 0.5 : 0;
+      for (let r = 0; r < ROWS; r++) drawLogo(cx, rowYPositions[r] + yOffset, alpha, scale);
+    }
+  }
+  function tick() {
+    wavePos += waveDir * WAVE_SPEED;
+    if (wavePos <= 0) { wavePos = 0; waveDir = 1; }
+    if (wavePos >= 1) { wavePos = 1; waveDir = -1; }
+    draw();
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize', () => { resize(); }, { passive: true });
+  resize();
+  tick();
 })();
 </script>
 </body>
