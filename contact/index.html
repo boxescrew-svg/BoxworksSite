@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <!-- Calendly -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script src="https://assets.calendly.com/assets/external/widget.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--black:#001133;--g950:#001a44;--g900:#002055;--g800:#003080;--g700:#0a3a8a;--titan:#7D8491;--g400:#9a9a9a;--g300:#bbb;--white:#F8F9FA;--blue:#0047FF;--gold:#D4AF37;--fs-h2:clamp(1.8rem,4vw,3.5rem);--fs-h3:clamp(1rem,2vw,1.5rem);--max:1440px;}
@@ -213,12 +213,7 @@ function closeMob(){document.getElementById('mob').classList.remove('open')}
 // ─── CALENDLY POPUP ─────────────────────────────────────────────
 function openCalendly(){
   Calendly.initPopupWidget({
-    url:'https://calendly.com/boxescrew/chiamata-strategica-boxworks',
-    pageSettings:{
-      backgroundColor:'001133',
-      textColor:'F8F9FA',
-      primaryColor:'0047FF'
-    }
+    url:'https://calendly.com/boxescrew/chiamata-strategica-boxworks?background_color=001133&text_color=F8F9FA&primary_color=0047FF'
   });
 }
 
