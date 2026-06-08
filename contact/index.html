@@ -158,8 +158,7 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
             <div class="section-label" style="margin-bottom:12px">Book a call</div>
             <h4 style="margin-bottom:8px">Preferisci parlare direttamente?</h4>
             <p style="font-size:12px;margin-bottom:20px">Prenota una chiamata di trenta minuti. Analizziamo il tuo progetto e definiamo il passo successivo.</p>
-            <!-- CALENDLY BUTTON -->
-            <button class="btn-gold" onclick="Calendly.initPopupWidget({url:'https://calendly.com/boxescrew/chiamata-strategica-boxworks'});return false;">
+            <button class="btn-gold" onclick="openCalendly();return false;">
               Prenota la chiamata
             </button>
           </div>
@@ -190,9 +189,9 @@ footer{border-top:1px solid var(--g900);padding:36px 0;width:100%}
       <a href="https://boxescrew-svg.github.io/BoxworksSite/">Home</a>
       <a href="https://boxescrew-svg.github.io/BoxworksSite/services/">Servizi</a>
       <a href="https://boxescrew-svg.github.io/BoxworksSite/casestudies/">Risultati</a>
+      <a href="https://boxescrew-svg.github.io/BoxworksSite/about/">About</a>
       <a href="https://boxescrew-svg.github.io/BoxworksSite/pricing/">Prezzi</a>
       <a href="https://boxescrew-svg.github.io/BoxworksSite/privacy/">Privacy</a>
-      <a>Cookie</a>
     </div>
   </div>
 </footer>
@@ -210,6 +209,18 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 function openMob(){document.getElementById('mob').classList.add('open')}
 function closeMob(){document.getElementById('mob').classList.remove('open')}
+
+// ─── CALENDLY POPUP ─────────────────────────────────────────────
+function openCalendly(){
+  Calendly.initPopupWidget({
+    url:'https://calendly.com/boxescrew/chiamata-strategica-boxworks',
+    pageSettings:{
+      backgroundColor:'001133',
+      textColor:'F8F9FA',
+      primaryColor:'0047FF'
+    }
+  });
+}
 
 // ─── FORM CONTATTI ──────────────────────────────────────────────
 function handleForm(e){
