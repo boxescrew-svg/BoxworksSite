@@ -116,9 +116,17 @@ footer .footer-inner{position:relative;z-index:1}
 .footer-links{display:flex;gap:20px;justify-content:flex-end;flex-wrap:wrap}
 .footer-links a{font-size:.7rem;color:var(--white);cursor:pointer;transition:color .15s;opacity:.5;text-decoration:none}
 .footer-links a:hover{color:var(--gold);opacity:1}
-@media(max-width:768px){
+
+/* ===== TABLET (501px - 1024px): griglie prezzi a 2 o 3 colonne ===== */
+@media(min-width:501px) and (max-width:1024px){
+  .price-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr)) !important}
+}
+
+/* ===== MOBILE (<=500px) ===== */
+@media(max-width:500px){
   .nav-links,.nav-cta{display:none}.ham{display:flex}nav{padding:0 5%}.inner{padding:0 5%}
-  h2{letter-spacing:-1.5px}.price-grid{grid-template-columns:1fr}
+  h2{letter-spacing:-1.5px}
+  .price-grid{grid-template-columns:1fr !important}
   section{padding:72px 0}.book-call-wrap{padding:24px}
   .footer-inner{grid-template-columns:1fr;text-align:center;gap:12px}.footer-links{justify-content:center}
   .logo-text{display:none}
