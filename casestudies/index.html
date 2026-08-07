@@ -82,9 +82,30 @@ p.lead{font-size:.95rem;line-height:1.65;color:var(--white)}
 .hc-slide{flex:0 0 100%;position:relative}
 .hc-slide img{width:100%;height:auto;display:block}
 .hc-name{position:absolute;left:22px;bottom:22px;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--white);background:rgba(0,17,51,.78);padding:9px 16px;backdrop-filter:blur(6px)}
-.hc-dots{position:absolute;right:22px;bottom:26px;display:flex;gap:9px;z-index:2}
-.hc-dot{display:block;width:9px;height:9px;border-radius:50%;background:rgba(248,249,250,.35);transition:background .3s}
-.hc-dot.active{background:var(--gold)}
+
+/* Frecce di navigazione */
+.hc-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:3;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:rgba(0,17,51,.55);
+  border:1px solid rgba(248,249,250,.28);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  color:var(--white);
+  cursor:pointer;
+  padding:0;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.hc-arrow:hover{background:rgba(0,17,51,.82);border-color:var(--gold);color:var(--gold)}
+.hc-arrow:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hc-arrow svg{width:16px;height:16px;display:block}
+.hc-prev{left:18px}
+.hc-next{right:18px}
+@media(max-width:480px){.hc-prev{left:10px}.hc-next{right:10px}}
 
 /* Blocchi alternati media + testo */
 .cs-split{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center;margin-bottom:88px}
@@ -224,10 +245,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="hc-name">Trattoria da Moreno · Velletri</div>
         </div>
       </div>
-      <div class="hc-dots">
-        <span class="hc-dot active"></span>
-        <span class="hc-dot"></span>
-      </div>
+      <button class="hc-arrow hc-prev" id="hcPrev" type="button" aria-label="Slide precedente">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button class="hc-arrow hc-next" id="hcNext" type="button" aria-label="Slide successiva">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
 
   </div>
@@ -391,18 +414,35 @@ function closeMob(){document.getElementById('mob').classList.remove('open')}
   });
 })();
 
-/* Carosello progetti, avanzamento automatico */
+/* Carosello progetti: autoplay + frecce di navigazione */
 (function(){
   const track = document.getElementById('hcTrack');
-  const dots = document.querySelectorAll('.hc-dot');
-  const total = dots.length;
-  let idx = 0;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  setInterval(function(){
-    idx = (idx + 1) % total;
+  if(!track) return;
+  const slides = track.querySelectorAll('.hc-slide');
+  const total = slides.length;
+  const prevBtn = document.getElementById('hcPrev');
+  const nextBtn = document.getElementById('hcNext');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let idx = 0, timer = null;
+
+  function goTo(i){
+    idx = (i + total) % total;               // wrap circolare (avanti e indietro)
     track.style.transform = 'translateX(-' + (idx * 100) + '%)';
-    dots.forEach(function(d,i){ d.classList.toggle('active', i === idx); });
-  }, 5000);
+  }
+  const next = () => goTo(idx + 1);
+  const prev = () => goTo(idx - 1);
+
+  function startAuto(){
+    if(reduce) return;                        // niente autoplay se reduced-motion
+    stopAuto();
+    timer = setInterval(next, 6000);          // permanenza 6s per slide
+  }
+  function stopAuto(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  if(nextBtn) nextBtn.addEventListener('click', () => { next(); startAuto(); });
+  if(prevBtn) prevBtn.addEventListener('click', () => { prev(); startAuto(); });
+
+  startAuto();
 })();
 
 (function(){
