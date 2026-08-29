@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Accedi — Boxworks</title>
+
+  <!-- Inter (body) + DM Sans (titoli, come da Brand Book) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind (Play CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['"DM Sans"', 'sans-serif'],
+          },
+          colors: {
+            g975: '#000c24', /* pannello sinistro: più scuro di g950 per contrasto */
+            g950: '#001a44',
+            g900: '#002055',
+            g800: '#003080',
+            g400: '#7D8491', /* --titan del Brand Book: grigio secondario / label */
+            white2: '#F8F9FA',
+            blue: '#0047FF',
+            gold: '#D4AF37',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Clerk SDK -->
+<script
+  async
+  crossorigin="anonymous"
+  data-clerk-publishable-key="pk_test_bm9ibGUtZ2FubmV0LTc3MjcuY2xlcmsuYWNjb3VudHMuZGV2JA"
+  src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+  type="text/javascript"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      -webkit-text-fill-color: #F8F9FA;
+      -webkit-box-shadow: 0 0 0 1000px #001a44 inset;
+      transition: background-color 9999s ease-in-out 0s;
+    }
+    .spinner {
+      width: 1rem; height: 1rem; border: 2px solid currentColor;
+      border-top-color: transparent; border-radius: 9999px;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Riquadro destro: canvas nido d'ape confinato + protezione leggibilità ── */
+    #login-visual { position: relative; overflow: hidden; }
+    #loginCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    .login-canvas-fade {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse at center, rgba(0,26,68,0) 0%, rgba(0,26,68,.30) 70%, rgba(0,26,68,.55) 100%);
+    }
+    .login-card {
+      position: relative; z-index: 2;
+      background: rgba(0, 32, 85, .82); /* g900 con trasparenza */
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+
+    /* Sotto i 768px l'animazione si disattiva: nessun canvas, sfondo statico */
+    @media (max-width: 768px) {
+      #loginCanvas, .login-canvas-fade { display: none !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #loginCanvas { display: none !important; }
+    }
+  </style>
+</head>
+
+<body class="h-full bg-g950 text-white2 font-sans antialiased selection:bg-blue selection:text-white2">
+
+  <main class="min-h-full grid lg:grid-cols-[1.1fr_1fr]">
+
+    <!-- ============ PANNELLO BRAND (statico, senza animazione) ============ -->
+    <aside class="hidden lg:flex flex-col justify-between border-r border-g800 bg-g975 px-14 py-12">
+      <a href="https://www.boxworks.agency/" class="flex items-center gap-2.5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960.99 1047.95" class="w-7 h-7 fill-[#F8F9FA]">
+          <path d="M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z" />
+        </svg>
+        <span class="font-sans font-extrabold tracking-tight text-xl text-white2"><span class="text-gold">B</span>oxworks</span>
+      </a>
+
+      <!-- Blocco centrato verticalmente nello spazio tra logo e copyright -->
+      <div class="flex-1 flex items-center">
+        <div class="max-w-xl">
+          <h1 class="font-sans font-black text-6xl xl:text-7xl leading-[0.95] tracking-tighter text-white2">Digital Growth<br /><em class="italic font-black text-gold">Engineered.</em></h1>
+          <p class="mt-6 text-sm font-normal leading-relaxed text-white2">
+            Report, campagne e automazioni del tuo progetto, in un unico pannello.
+          </p>
+
+          <dl class="mt-12 text-sm">
+            <div class="flex justify-between border-t border-g800 py-3">
+              <dt class="text-white2 font-normal">Clienti attivi</dt><dd class="font-display font-bold text-white2">50+</dd>
+            </div>
+            <div class="flex justify-between border-t border-g800 py-3">
+              <dt class="text-white2 font-normal">Progetti completati</dt><dd class="font-display font-bold text-white2">100+</dd>
+            </div>
+            <div class="flex justify-between border-t border-b border-g800 py-3">
+              <dt class="text-white2 font-normal">Retention</dt><dd class="font-display font-bold text-white2">84%</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <p class="text-xs font-normal text-g400">© 2025 Boxworks · Roma, Italia</p>
+    </aside>
+
+    <!-- ============ FORM — riquadro destro con nido d'ape confinato ============ -->
+    <section id="login-visual" class="flex items-center justify-center px-6 py-14 sm:px-10 bg-g950">
+      <canvas id="loginCanvas" aria-hidden="true"></canvas>
+      <div class="login-canvas-fade"></div>
+
+      <div class="w-full max-w-[380px] relative z-10">
+
+        <!-- Card che protegge la leggibilità: logo mobile + label + form + testo finale -->
+        <div class="login-card border border-g800 rounded-2xl p-6 sm:p-8">
+
+          <a href="https://www.boxworks.agency/" class="lg:hidden flex items-center gap-2.5 mb-8">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960.99 1047.95" class="w-6 h-6 fill-[#F8F9FA]">
+              <path d="M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z" />
+            </svg>
+            <span class="font-sans font-extrabold tracking-tight text-xl text-white2"><span class="text-gold">B</span>oxworks</span>
+          </a>
+
+          <header class="mb-8">
+            <p class="font-display font-medium text-xs uppercase tracking-widest text-g400 mb-3">Accesso</p>
+            <h2 class="font-display font-bold text-2xl tracking-tight text-white2">Entra nel tuo pannello</h2>
+          </header>
+
+          <div id="clerk-loading" class="text-sm font-normal text-g400 mb-6">Inizializzazione…</div>
+
+          <form id="login-form" novalidate class="hidden">
+
+            <!-- Social login: Google + GitHub affiancati -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+              <button type="button" id="btn-google" data-btn
+                class="w-full py-2.5 px-3 rounded-md font-medium text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-g950 text-white2 border border-g800 hover:border-blue disabled:opacity-50 disabled:cursor-not-allowed">
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M21.6 12.23c0-.68-.06-1.34-.17-1.98H12v3.75h5.38a4.6 4.6 0 0 1-2 3.02v2.5h3.23c1.89-1.74 2.99-4.3 2.99-7.29Z"/>
+                  <path fill="currentColor" opacity=".7" d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.23-2.5c-.9.6-2.04.95-3.39.95-2.6 0-4.81-1.76-5.6-4.12H3.06v2.58A10 10 0 0 0 12 22Z"/>
+                  <path fill="currentColor" opacity=".5" d="M6.4 13.91A6 6 0 0 1 6.09 12c0-.66.11-1.31.31-1.91V7.5H3.06A10 10 0 0 0 2 12c0 1.61.39 3.14 1.06 4.5l3.34-2.59Z"/>
+                  <path fill="currentColor" opacity=".85" d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.87-2.87C16.96 3 14.7 2 12 2a10 10 0 0 0-8.94 5.5l3.34 2.59C7.19 7.74 9.4 5.98 12 5.98Z"/>
+                </svg>
+                <span data-label>Google</span>
+              </button>
+
+              <button type="button" id="btn-github" data-btn
+                class="w-full py-2.5 px-3 rounded-md font-medium text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-g950 text-white2 border border-g800 hover:border-blue disabled:opacity-50 disabled:cursor-not-allowed">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2C6.48 2 2 6.58 2 12.19c0 4.49 2.87 8.3 6.84 9.64.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.37-3.37-1.37-.46-1.19-1.11-1.51-1.11-1.51-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.6.69.49A10.03 10.03 0 0 0 22 12.19C22 6.58 17.52 2 12 2Z"/>
+                </svg>
+                <span data-label>GitHub</span>
+              </button>
+            </div>
+
+            <div class="flex items-center gap-3 mb-6 text-xs font-medium uppercase tracking-wider text-g400">
+              <span class="h-px flex-1 bg-g800"></span>oppure<span class="h-px flex-1 bg-g800"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col gap-1.5 w-full mb-4">
+              <label for="email" class="text-xs font-semibold uppercase tracking-widest text-g400">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="nome@azienda.it"
+                class="w-full bg-g950 text-white2 text-sm font-normal px-3.5 py-2.5 rounded-md border border-g800 outline-none transition-colors duration-150 placeholder-g400/60 focus:border-blue focus:ring-1 focus:ring-blue" />
+              <span data-error-for="email" class="hidden text-xs font-normal text-red-400 mt-0.5"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="flex flex-col gap-1.5 w-full mb-4">
+              <div class="flex justify-between items-baseline">
+                <label for="password" class="text-xs font-semibold uppercase tracking-widest text-g400">Password</label>
+                <button type="button" id="btn-forgot" class="text-xs font-normal text-g400 hover:text-blue transition-colors cursor-pointer bg-transparent border-0 p-0">Password dimenticata?</button>
+              </div>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••"
+                class="w-full bg-g950 text-white2 text-sm font-normal px-3.5 py-2.5 rounded-md border border-g800 outline-none transition-colors duration-150 placeholder-g400/60 focus:border-blue focus:ring-1 focus:ring-blue" />
+              <span data-error-for="password" class="hidden text-xs font-normal text-red-400 mt-0.5"></span>
+            </div>
+
+            <!-- 2FA -->
+            <div id="totp-wrap" class="hidden flex-col gap-1.5 w-full mb-4">
+              <label for="totp" class="text-xs font-semibold uppercase tracking-widest text-g400">Codice di verifica</label>
+              <input id="totp" name="totp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"
+                class="w-full bg-g950 text-white2 text-sm font-normal px-3.5 py-2.5 rounded-md border border-g800 outline-none transition-colors duration-150 placeholder-g400/60 focus:border-blue focus:ring-1 focus:ring-blue tracking-[0.3em]" />
+              <span data-error-for="totp" class="hidden text-xs font-normal text-red-400 mt-0.5"></span>
+            </div>
+
+            <p id="form-error" role="alert" class="hidden text-xs font-normal text-red-400 mb-4"></p>
+
+            <!-- Submit -->
+            <button type="submit" id="btn-submit" data-btn
+              class="w-full py-2.5 px-4 rounded-md font-semibold text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-blue text-white2 hover:bg-[#1a5aff] disabled:opacity-50 disabled:cursor-not-allowed">
+              <span data-label>Accedi</span>
+            </button>
+          </form>
+
+          <!-- ============ RESET PASSWORD — flusso nativo Clerk, nessun redirect esterno ============ -->
+          <form id="forgot-form" novalidate class="hidden">
+            <p class="text-sm font-normal text-g400 mb-5">
+              Inserisci la tua email: ti invieremo un codice per reimpostare la password.
+            </p>
+
+            <div class="flex flex-col gap-1.5 w-full mb-4">
+              <label for="forgot-email" class="text-xs font-semibold uppercase tracking-widest text-g400">Email</label>
+              <input id="forgot-email" name="forgot-email" type="email" autocomplete="email" inputmode="email" placeholder="nome@azienda.it"
+                class="w-full bg-g950 text-white2 text-sm font-normal px-3.5 py-2.5 rounded-md border border-g800 outline-none transition-colors duration-150 placeholder-g400/60 focus:border-blue focus:ring-1 focus:ring-blue" />
+              <span data-error-for="forgot-email" class="hidden text-xs font-normal text-red-400 mt-0.5"></span>
+            </div>
+
+            <p id="forgot-error" role="alert" class="hidden text-xs font-normal text-red-400 mb-4"></p>
+
+            <div class="flex gap-3">
+              <button type="button" id="btn-forgot-cancel" class="w-1/3 py-2.5 px-3 rounded-md font-medium text-sm transition-colors duration-150 cursor-pointer bg-g950 text-white2 border border-g800 hover:border-blue">Annulla</button>
+              <button type="submit" id="btn-forgot-send" data-btn
+                class="w-2/3 py-2.5 px-4 rounded-md font-semibold text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-blue text-white2 hover:bg-[#1a5aff] disabled:opacity-50 disabled:cursor-not-allowed">
+                <span data-label>Invia codice</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- ============ RESET PASSWORD — step 2: codice + nuova password ============ -->
+          <form id="reset-form" novalidate class="hidden">
+            <p class="text-sm font-normal text-g400 mb-5">
+              Controlla la tua casella email: inserisci il codice ricevuto e imposta una nuova password.
+            </p>
+
+            <div class="flex flex-col gap-1.5 w-full mb-4">
+              <label for="reset-code" class="text-xs font-semibold uppercase tracking-widest text-g400">Codice di verifica</label>
+              <input id="reset-code" name="reset-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"
+                class="w-full bg-g950 text-white2 text-sm font-normal px-3.5 py-2.5 rounded-md border border-g800 outline-none transition-colors duration-150 placeholder-g400/60 focus:border-blue focus:ring-1 focus:ring-blue tracking-[0.3em]" />
+              <span data-error-for="reset-code" class="hidden text-xs font-normal text-red-400 mt-0.5"></span>
+            </div>
+
+            <div class="flex flex-col gap-1.5 w-full mb-4">
+              <label for="reset-password" class="text-xs font-semibold uppercase tracking-widest text-g400">Nuova password</label>
+              <input id="reset-password" name="reset-password" type="password" autocomplete="new-password" placeholder="••••••••"
+                class="w-full bg-g950 text-white2 text-sm font-normal px-3.5 py-2.5 rounded-md border border-g800 outline-none transition-colors duration-150 placeholder-g400/60 focus:border-blue focus:ring-1 focus:ring-blue" />
+              <span data-error-for="reset-password" class="hidden text-xs font-normal text-red-400 mt-0.5"></span>
+            </div>
+
+            <p id="reset-error" role="alert" class="hidden text-xs font-normal text-red-400 mb-4"></p>
+
+            <div class="flex gap-3">
+              <button type="button" id="btn-reset-cancel" class="w-1/3 py-2.5 px-3 rounded-md font-medium text-sm transition-colors duration-150 cursor-pointer bg-g950 text-white2 border border-g800 hover:border-blue">Annulla</button>
+              <button type="submit" id="btn-reset-submit" data-btn
+                class="w-2/3 py-2.5 px-4 rounded-md font-semibold text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-blue text-white2 hover:bg-[#1a5aff] disabled:opacity-50 disabled:cursor-not-allowed">
+                <span data-label>Reimposta password</span>
+              </button>
+            </div>
+          </form>
+
+          <p id="forgot-success" class="hidden text-xs font-normal text-gold mb-2">Password aggiornata. Accesso in corso…</p>
+
+          <p class="mt-8 text-xs font-normal text-g400">
+            Non hai un account? L'accesso è riservato ai clienti attivi.
+            <a href="https://www.boxworks.agency/contact/" class="text-gold underline underline-offset-4 decoration-g800 hover:decoration-gold transition-colors">Parliamone</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+ <script>
+  (() => {
+    'use strict';
+
+    // ---------- Config ----------
+    const AFTER_SIGN_IN_URL = '/dashboard/';
+    const SSO_CALLBACK_URL  = '/login/sso-callback/';
+
+    // ---------- DOM ----------
+    const $  = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+    const form        = $('#login-form');
+    const loading     = $('#clerk-loading');
+    const emailEl     = $('#email');
+    const passEl      = $('#password');
+    const totpWrap    = $('#totp-wrap');
+    const totpEl      = $('#totp');
+    const formError   = $('#form-error');
+    const btnSubmit   = $('#btn-submit');
+    const btnGoogle   = $('#btn-google');
+    const btnGithub   = $('#btn-github');
+
+    // Reset password
+    const btnForgot       = $('#btn-forgot');
+    const forgotForm      = $('#forgot-form');
+    const forgotEmailEl   = $('#forgot-email');
+    const forgotError     = $('#forgot-error');
+    const btnForgotSend   = $('#btn-forgot-send');
+    const btnForgotCancel = $('#btn-forgot-cancel');
+
+    const resetForm       = $('#reset-form');
+    const resetCodeEl     = $('#reset-code');
+    const resetPassEl     = $('#reset-password');
+    const resetError      = $('#reset-error');
+    const btnResetSubmit  = $('#btn-reset-submit');
+    const btnResetCancel  = $('#btn-reset-cancel');
+    const forgotSuccess   = $('#forgot-success');
+
+    // ---------- UI helpers (CORRETTO) ----------
+    const setLoading = (btn, on) => {
+      if (!btn) return;
+      btn.disabled = on;
+      const label = $('[data-label]', btn);
+      
+      if (on) {
+        if (label) btn.setAttribute('data-text', label.textContent);
+        
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner';
+        spinner.setAttribute('data-label', '');
+        
+        if (label) label.replaceWith(spinner);
+      } else {
+        const savedText = btn.getAttribute('data-text');
+        if (savedText) {
+          const span = document.createElement('span');
+          span.textContent = savedText;
+          span.setAttribute('data-label', '');
+          
+          const currentLabel = $('[data-label]', btn);
+          if (currentLabel) currentLabel.replaceWith(span);
+        }
+      }
+    };
+
+    const clearErrors = () => {
+      $$('[data-error-for]').forEach((s) => { s.textContent = ''; s.classList.add('hidden'); });
+      if (formError) { formError.textContent = ''; formError.classList.add('hidden'); }
+      if (forgotError) { forgotError.textContent = ''; forgotError.classList.add('hidden'); }
+      if (resetError) { resetError.textContent = ''; resetError.classList.add('hidden'); }
+      [emailEl, passEl, totpEl, forgotEmailEl, resetCodeEl, resetPassEl].forEach((i) => i && i.classList.remove('border-red-400'));
+    };
+
+    const fieldError = (name, msg) => {
+      const s = $(`[data-error-for="${name}"]`);
+      if (s) { s.textContent = msg; s.classList.remove('hidden'); }
+      const input = $(`#${name}`);
+      if (input) input.classList.add('border-red-400');
+    };
+
+    const globalError = (msg) => { 
+      if (formError) { formError.textContent = msg; formError.classList.remove('hidden'); }
+    };
+
+    // Mappa errori Clerk → campo + copy in italiano
+    const CLERK_MESSAGES = {
+      form_identifier_not_found: ['email', 'Nessun account associato a questa email.'],
+      form_password_incorrect:   ['password', 'Password non corretta.'],
+      form_code_incorrect:       ['totp', 'Codice non valido.'],
+      too_many_requests:         [null, 'Troppi tentativi. Riprova tra qualche minuto.'],
+      session_exists:            [null, 'Sei già autenticato.'],
+    };
+
+    const handleClerkError = (err) => {
+      const e = err?.errors?.[0];
+      if (!e) return globalError('Qualcosa non ha funzionato. Riprova.');
+      const [field, msg] = CLERK_MESSAGES[e.code] || [null, e.longMessage || e.message];
+      field ? fieldError(field, msg) : globalError(msg);
+      console.error('[Clerk]', e.code, e);
+    };
+
+    const RESET_MESSAGES = {
+      form_identifier_not_found:     'Nessun account associato a questa email.',
+      form_code_incorrect:           'Codice non valido o scaduto.',
+      form_password_pwned:           'Questa password è troppo comune: scegline una più sicura.',
+      form_password_length_too_short:'La password deve avere almeno 8 caratteri.',
+      too_many_requests:             'Troppi tentativi. Riprova tra qualche minuto.',
+    };
+
+    const showPanelError = (err, panelErrorEl) => {
+      const e = err?.errors?.[0];
+      const msg = (e && (RESET_MESSAGES[e.code] || e.longMessage || e.message)) || 'Qualcosa non ha funzionato. Riprova.';
+      if (panelErrorEl) { panelErrorEl.textContent = msg; panelErrorEl.classList.remove('hidden'); }
+      console.error('[Clerk]', e?.code, e);
+    };
+
+    const validate = () => {
+      let ok = true;
+      const email = emailEl ? emailEl.value.trim() : '';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('email', 'Inserisci un indirizzo email valido.'); ok = false; }
+      if (passEl && !passEl.value) { fieldError('password', 'Inserisci la password.'); ok = false; }
+      if (totpWrap && !totpWrap.classList.contains('hidden') && totpEl && totpEl.value.trim().length < 6) { 
+        fieldError('totp', 'Inserisci il codice a 6 cifre.'); ok = false; 
+      }
+      return ok;
+    };
+
+    // ---------- Clerk ----------
+    const finish = async (signIn) => {
+      await Clerk.setActive({ session: signIn.createdSessionId });
+      location.replace(AFTER_SIGN_IN_URL);
+    };
+
+    const onSubmit = async (ev) => {
+      ev.preventDefault();
+      clearErrors();
+      if (!validate()) return;
+      setLoading(btnSubmit, true);
+
+      try {
+        const signIn = Clerk.client.signIn;
+        const inSecondFactor = totpWrap && !totpWrap.classList.contains('hidden');
+
+        if (inSecondFactor) {
+          const res = await signIn.attemptSecondFactor({ strategy: 'totp', code: totpEl.value.trim() });
+          if (res.status === 'complete') return finish(res);
+          return globalError('Verifica non completata. Riprova.');
+        }
+
+        const res = await signIn.create({ identifier: emailEl.value.trim(), password: passEl.value });
+
+        if (res.status === 'complete') return finish(res);
+
+        if (res.status === 'needs_second_factor') {
+          totpWrap.classList.remove('hidden'); 
+          totpWrap.classList.add('flex');
+          totpEl.focus();
+          btnSubmit.setAttribute('data-text', 'Verifica');
+          const lbl = $('[data-label]', btnSubmit);
+          if (lbl) lbl.textContent = 'Verifica';
+          return;
+        }
+
+        globalError('Accesso non completato: stato "' + res.status + '".');
+      } catch (err) {
+        handleClerkError(err);
+      } finally {
+        setLoading(btnSubmit, false);
+      }
+    };
+
+    const authWithRedirect = async (strategy, btn) => {
+      clearErrors();
+      setLoading(btn, true);
+      try {
+        await Clerk.client.signIn.authenticateWithRedirect({
+          strategy,
+          redirectUrl: SSO_CALLBACK_URL,
+          redirectUrlComplete: AFTER_SIGN_IN_URL,
+        });
+      } catch (err) {
+        handleClerkError(err);
+        setLoading(btn, false);
+      }
+    };
+
+    // ---------- Reset password ----------
+    const showLoginPanel = () => {
+      clearErrors();
+      if (forgotForm) forgotForm.classList.add('hidden');
+      if (resetForm) resetForm.classList.add('hidden');
+      if (forgotSuccess) forgotSuccess.classList.add('hidden');
+      if (form) form.classList.remove('hidden');
+    };
+
+    const showForgotPanel = () => {
+      clearErrors();
+      if (form) form.classList.add('hidden');
+      if (resetForm) resetForm.classList.add('hidden');
+      if (forgotEmailEl && emailEl) forgotEmailEl.value = emailEl.value.trim();
+      if (forgotForm) forgotForm.classList.remove('hidden');
+      if (forgotEmailEl) forgotEmailEl.focus({ preventScroll: true });
+    };
+
+    const showResetPanel = () => {
+      clearErrors();
+      if (forgotForm) forgotForm.classList.add('hidden');
+      if (resetForm) resetForm.classList.remove('hidden');
+      if (resetCodeEl) resetCodeEl.focus({ preventScroll: true });
+    };
+
+    const onForgotSubmit = async (ev) => {
+      ev.preventDefault();
+      clearErrors();
+      const email = forgotEmailEl ? forgotEmailEl.value.trim() : '';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        fieldError('forgot-email', 'Inserisci un indirizzo email valido.');
+        return;
+      }
+      setLoading(btnForgotSend, true);
+      try {
+        await Clerk.client.signIn.create({ identifier: email, strategy: 'reset_password_email_code' });
+        showResetPanel();
+      } catch (err) {
+        showPanelError(err, forgotError);
+      } finally {
+        setLoading(btnForgotSend, false);
+      }
+    };
+
+    const onResetSubmit = async (ev) => {
+      ev.preventDefault();
+      clearErrors();
+      const code = resetCodeEl ? resetCodeEl.value.trim() : '';
+      const newPassword = resetPassEl ? resetPassEl.value : '';
+      let ok = true;
+      if (code.length < 6) { fieldError('reset-code', 'Inserisci il codice a 6 cifre.'); ok = false; }
+      if (!newPassword || newPassword.length < 8) { fieldError('reset-password', 'Almeno 8 caratteri.'); ok = false; }
+      if (!ok) return;
+
+      setLoading(btnResetSubmit, true);
+      try {
+        const signIn = Clerk.client.signIn;
+        const verify = await signIn.attemptFirstFactor({ strategy: 'reset_password_email_code', code });
+
+        if (verify.status === 'needs_new_password') {
+          const done = await signIn.resetPassword({ password: newPassword });
+          if (done.status === 'complete') {
+            if (resetForm) resetForm.classList.add('hidden');
+            if (forgotSuccess) forgotSuccess.classList.remove('hidden');
+            return finish(done);
+          }
+          showPanelError(null, resetError);
+          return;
+        }
+
+        if (verify.status === 'complete') return finish(verify);
+
+        if (resetError) {
+          resetError.textContent = 'Codice non valido o scaduto.';
+          resetError.classList.remove('hidden');
+        }
+      } catch (err) {
+        showPanelError(err, resetError);
+      } finally {
+        setLoading(btnResetSubmit, false);
+      }
+    };
+
+    const boot = async () => {
+      try {
+        await Clerk.load();
+
+        if (Clerk.user) return location.replace(AFTER_SIGN_IN_URL);
+
+        if (loading) loading.classList.add('hidden');
+        if (form) form.classList.remove('hidden');
+        if (form) form.addEventListener('submit', onSubmit);
+        if (btnGoogle) btnGoogle.addEventListener('click', () => authWithRedirect('oauth_google', btnGoogle));
+        if (btnGithub) btnGithub.addEventListener('click', () => authWithRedirect('oauth_github', btnGithub));
+
+        if (btnForgot) btnForgot.addEventListener('click', showForgotPanel);
+        if (btnForgotCancel) btnForgotCancel.addEventListener('click', showLoginPanel);
+        if (btnResetCancel) btnResetCancel.addEventListener('click', showLoginPanel);
+        if (forgotForm) forgotForm.addEventListener('submit', onForgotSubmit);
+        if (resetForm) resetForm.addEventListener('submit', onResetSubmit);
+
+        if (emailEl) emailEl.focus({ preventScroll: true });
+      } catch (err) {
+        if (loading) loading.textContent = 'Impossibile inizializzare l\'autenticazione. Ricarica la pagina.';
+        console.error('[Clerk.load]', err);
+      }
+    };
+
+    if (window.Clerk?.loaded) boot();
+    else window.addEventListener('load', boot);
+  })();
+</script>
+
+  <!-- ============ CANVAS NIDO D'API — confinato al solo riquadro destro ============ -->
+  <script>
+    (() => {
+      'use strict';
+
+      const section = document.getElementById('login-visual');
+      const canvas  = document.getElementById('loginCanvas');
+      if (!section || !canvas) return;
+
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return; // nessuna animazione: sfondo statico
+
+      const ctx = canvas.getContext('2d');
+
+      // Stessa icona Boxworks usata come "esagono" del pattern, come in Homepage
+      const LOGO_PATH_STR = "M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7-50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z";
+      const logoPath2D = new Path2D(LOGO_PATH_STR);
+      const VB_W = 960.99, VB_H = 1047.95;
+
+      // Pattern più marcato e visibile, sempre confinato al riquadro destro
+      const WAVE_SPEED  = 0.00022;
+      const REST_ALPHA  = 0.07;
+      const PEAK_ALPHA  = 0.20;
+      const SCALE_BASE  = 0.62;
+      const SCALE_PEAK  = 0.88;
+      const WAVE_WIDTH  = 0.16;
+
+      let wavePos = 1.0, waveDir = -1;
+      let points = [], cellD = 0, dpr = 1, hidden = false, resizeTimer, W = 0, H = 0, active = false;
+
+      const isDesktop = () => window.innerWidth >= 768;
+
+      function resize() {
+        const rect = section.getBoundingClientRect();
+        W = rect.width; H = rect.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildHoneycomb(W, H);
+      }
+
+      function buildHoneycomb(w, h) {
+        const COLS_TARGET = 13; // densità aumentata per un pattern più visibile nel riquadro
+        cellD = w / COLS_TARGET;
+        const colStep = cellD, rowStep = cellD * Math.sqrt(3) / 2;
+        const totalCols = Math.ceil(w / colStep) + 2;
+        const totalRows = Math.ceil(h / rowStep) + 2;
+        const offsetX = -colStep, offsetY = -rowStep;
+        points = [];
+        for (let r = 0; r < totalRows; r++) {
+          const xShift = r % 2 === 1 ? colStep * 0.5 : 0;
+          for (let c = 0; c < totalCols; c++)
+            points.push({ x: offsetX + c * colStep + xShift, y: offsetY + r * rowStep, normX: 0 });
+        }
+        const maxX = w + colStep;
+        for (let i = 0; i < points.length; i++)
+          points[i].normX = Math.max(0, Math.min(1, (points[i].x - offsetX) / (maxX - offsetX)));
+      }
+
+      function easeInOut(t) { return t * t * (3 - 2 * t); }
+      function getProps(normX) {
+        const d = Math.abs(normX - wavePos);
+        if (d > WAVE_WIDTH * 2) return { alpha: REST_ALPHA, scale: SCALE_BASE };
+        const t = easeInOut(1 - d / (WAVE_WIDTH * 2));
+        return { alpha: REST_ALPHA + (PEAK_ALPHA - REST_ALPHA) * t, scale: SCALE_BASE + (SCALE_PEAK - SCALE_BASE) * t };
+      }
+
+      function drawLogo(cx, cy, alpha, scale) {
+        if (alpha < 0.004) return;
+        const s = (cellD * scale) / VB_W;
+        ctx.save();
+        ctx.globalAlpha = alpha; ctx.fillStyle = '#F8F9FA';
+        ctx.translate(cx, cy); ctx.scale(s, s);
+        ctx.translate(-VB_W * 0.5 + 59.15, -VB_H * 0.5 + 16.05);
+        ctx.fill(logoPath2D); ctx.restore();
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (let i = 0; i < points.length; i++) {
+          const p = points[i], { alpha, scale } = getProps(p.normX);
+          drawLogo(p.x, p.y, alpha, scale);
+        }
+      }
+
+      function tick() {
+        if (active && !hidden) {
+          wavePos += waveDir * WAVE_SPEED;
+          if (wavePos <= 0) { wavePos = 0; waveDir = 1; }
+          if (wavePos >= 1) { wavePos = 1; waveDir = -1; }
+          draw();
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function evaluateActive() {
+        // Regola responsive: sotto i 768px l'animazione resta disattivata
+        active = isDesktop();
+        canvas.style.display = active ? 'block' : 'none';
+        if (active) resize();
+      }
+
+      document.addEventListener('visibilitychange', () => { hidden = document.hidden; }, { passive: true });
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { ctx.setTransform(1, 0, 0, 1, 0, 0); evaluateActive(); }, 120);
+      }, { passive: true });
+
+      evaluateActive();
+      tick();
+    })();
+  </script>
+</body>
+</html>
