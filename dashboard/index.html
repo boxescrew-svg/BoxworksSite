@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="it" class="h-full">
 <head>
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Dashboard - Boxworks</title>
+
+  <!-- Favicon SVG -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-TP7J56FC');</script>
+  <!-- End Google Tag Manager -->
+
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <!-- Clerk SDK -->
   <script
     async
@@ -17,6 +28,10 @@
     type="text/javascript"></script>
 </head>
 <body class="h-full bg-slate-950 text-slate-100 font-sans flex flex-col justify-between antialiased">
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP7J56FC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
   <!-- Loading State (visibile prima dell'inizializzazione di Clerk) -->
   <div id="dash-loading" class="fixed inset-0 bg-slate-950 flex items-center justify-center z-50">
