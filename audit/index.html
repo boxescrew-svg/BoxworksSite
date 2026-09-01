@@ -616,53 +616,44 @@ footer{padding:28px 0;border-top:1px solid var(--g900)}
 
 </div><!-- /wrap -->
 
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-emailjs.init('HFB4HnVSjxADnuvB3');
-
 function handleForm(e) {
   e.preventDefault();
   var form = e.target;
   var btn  = form.querySelector('.form-submit');
   var msg  = document.getElementById('form-msg');
-  btn.textContent = 'Invio in corso\u2026';
+  
+  btn.textContent = 'Invio in corso…';
   btn.disabled = true;
-  emailjs.send('service_0afqn0a', 'template_b5rh6j6', {
-    nome:      form.nome.value,
-    email:     form.email.value,
-    azienda:   form.azienda.value,
-    messaggio: form.messaggio.value
-  })
-  .then(function() {
-    msg.style.display = 'block';
-    form.reset();
-    btn.textContent = 'Invia la richiesta';
-    btn.disabled = false;
-  })
-  .catch(function() {
-    btn.textContent = 'Errore \u2014 riprova';
-    btn.disabled = false;
-  });
-}
 
-function handleNL(e) {
-  e.preventDefault();
-  var email = document.getElementById('nl-email').value;
-  var btn   = e.target.querySelector('button');
-  btn.textContent = 'Invio\u2026';
-  btn.disabled = true;
-  emailjs.send('service_0afqn0a', 'template_m0sssgd', {
-    subscriber_email: email
+  // Indirizzo del Webhook Make.com
+  var webhookUrl = "https://hook.eu1.make.com/lzsipj2dv7gswcw08378bhxtpvutzkxv";
+
+  // Invio dei dati del form a Make.com
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      nome: form.nome.value,
+      email: form.email.value,
+      azienda: form.azienda ? form.azienda.value : '',
+      messaggio: form.messaggio ? form.messaggio.value : ''
+    })
   })
-  .then(function() {
-    document.getElementById('nl-success').style.display = 'block';
-    document.getElementById('nl-form').reset();
-    btn.textContent = 'Iscriviti';
-    btn.disabled = false;
+  .then(function(response) {
+    if (response.ok) {
+      msg.style.display = 'block';
+      form.reset();
+      btn.textContent = 'Invia la richiesta';
+      btn.disabled = false;
+    } else {
+      throw new Error('Errore durante l\'invio');
+    }
   })
-  .catch(function() {
-    btn.textContent = 'Errore \u2014 riprova';
+  .catch(function(error) {
+    btn.textContent = 'Errore — riprova';
     btn.disabled = false;
   });
 }

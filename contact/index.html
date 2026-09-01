@@ -321,37 +321,53 @@ function closeCalendly(){
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCalendly(); });
 
+/* INVIO FORM CONTATTI VIA MAKE.COM -> SUPABASE */
 function handleForm(e){
   e.preventDefault();
   const form = e.target;
   const btn  = form.querySelector('.form-submit');
   const msg  = document.getElementById('form-msg');
+  
   btn.textContent = 'Invio in corso…';
   btn.disabled = true;
+
   let messaggio = form.messaggio.value;
   if(auditChecked){ messaggio = '[AUDIT RICHIESTO] ' + (messaggio ? messaggio : ''); }
-  emailjs.send('service_0afqn0a','template_b5rh6j6',{
-    nome:     form.nome.value,
-    email:    form.email.value,
-    azienda:  form.azienda.value,
-    servizio: form.servizio.value,
-    budget:   form.budget.value,
-    messaggio: messaggio
+
+  const webhookUrl = "https://hook.eu1.make.com/lzsipj2dv7gswcw08378bhxtpvutzkxv";
+
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nome: form.nome.value,
+      email: form.email.value,
+      azienda: form.azienda ? form.azienda.value : '',
+      servizio: form.servizio ? form.servizio.value : '',
+      budget: form.budget ? form.budget.value : '',
+      messaggio: messaggio
+    })
   })
-  .then(()=>{
-    if(msg){ msg.style.display='block'; }
-    form.reset();
-    auditChecked = false;
-    document.getElementById('audit-wrap').classList.remove('active');
-    btn.textContent = 'Invia messaggio';
-    btn.disabled = false;
+  .then(function(response) {
+    if (response.ok) {
+      if(msg){ msg.style.display = 'block'; }
+      form.reset();
+      auditChecked = false;
+      const auditWrap = document.getElementById('audit-wrap');
+      if(auditWrap) auditWrap.classList.remove('active');
+      btn.textContent = 'Invia messaggio';
+      btn.disabled = false;
+    } else {
+      throw new Error('Errore durante l\'invio');
+    }
   })
-  .catch(()=>{
+  .catch(function(error) {
     btn.textContent = 'Errore — riprova';
     btn.disabled = false;
   });
 }
 
+/* ISCRIZIONE NEWSLETTER (RIMANE SU EMAILJS) */
 function handleNL(e){
   e.preventDefault();
   const email = document.getElementById('nl-email').value;
@@ -374,6 +390,7 @@ function handleNL(e){
   });
 }
 
+/* ANIMAZIONE CANVAS BACKGROUND */
 (function(){
   if (window.innerWidth < 768) return;
 
@@ -466,6 +483,7 @@ function handleNL(e){
   resize(); tick();
 })();
 </script>
+
 <script src="/lang-selector.js"></script>
 </body>
 </html>
