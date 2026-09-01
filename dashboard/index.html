@@ -26,12 +26,15 @@
     data-clerk-publishable-key="pk_test_bm9ibGUtZ2FubmV0LTc3MjcuY2xlcmsuYWNjb3VudHMuZGV2JA"
     src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
     type="text/javascript"></script>
+
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="h-full bg-slate-950 text-slate-100 font-sans flex flex-col justify-between antialiased">
   <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP7J56FC"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP7J56FC"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <!-- Loading State (visibile prima dell'inizializzazione di Clerk) -->
   <div id="dash-loading" class="fixed inset-0 bg-slate-950 flex items-center justify-center z-50">
@@ -101,16 +104,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="text-xs text-slate-500">Aggiornato in tempo reale</span>
           </div>
 
-          <!-- Stato Progetto Fittizio/Iniziale -->
-          <div class="border border-slate-800 bg-slate-950/50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <p class="text-sm font-semibold text-white">Configurazione Iniziale Account</p>
-                <span class="px-2 py-0.5 text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">In Attesa</span>
-              </div>
-              <p class="text-xs text-slate-400">Il tuo profilo è attivo. Invia una richiesta di audit o contattaci per collegare un nuovo progetto.</p>
-            </div>
-            <a href="https://www.boxworks.agency/contact/" class="text-xs text-blue-400 hover:underline shrink-0">Dettagli →</a>
+          <!-- Contenitore Progetti Dinamici da Supabase -->
+          <div id="projects-container" class="space-y-3">
+            <p class="text-xs text-slate-400 animate-pulse">Caricamento progetti da Supabase...</p>
           </div>
         </div>
 
@@ -144,12 +140,86 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   </div>
 
-  <!-- Script Inizializzazione Clerk per Dashboard -->
+  <!-- Script Inizializzazione Clerk & Supabase per Dashboard -->
   <script>
     (() => {
       'use strict';
 
       const $ = (s) => document.querySelector(s);
+
+      // Credenziali Supabase
+      const SUPABASE_URL = 'https://xjoqlsdddxhrfynwlyac.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhqb3Fsc2RkZHhocmZ5bndseWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyNjU4MDYsImV4cCI6MjEwMzg0MTgwNn0.3khGptusOIFLBJ9NlDbtjevEKKwc-c9OqI2vZKKcE6A';
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // Carica i progetti da Supabase filtrati per l'email dell'utente
+      const caricaProgettiSupabase = async (userEmail) => {
+        const container = $('#projects-container');
+        try {
+          const { data, error } = await supabaseClient
+            .from('progetti_audit')
+            .select('*')
+            .eq('user_email', userEmail)
+            .order('created_at', { ascending: false });
+
+          if (error) {
+            console.error('[Supabase Fetch Error]', error);
+            container.innerHTML = `<p class="text-xs text-rose-400">Impossibile caricare i progetti.</p>`;
+            return;
+          }
+
+          if (!data || data.length === 0) {
+            container.innerHTML = `
+              <div class="border border-slate-800 bg-slate-950/50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <p class="text-sm font-semibold text-white">Nessun progetto trovato</p>
+                    <span class="px-2 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-400 border border-slate-700 rounded">In Attesa</span>
+                  </div>
+                  <p class="text-xs text-slate-400">Non ci sono ancora progetti registrati per la tua email (${userEmail}).</p>
+                </div>
+                <a href="/contact/" class="text-xs text-blue-400 hover:underline shrink-0">Invia richiesta →</a>
+              </div>
+            `;
+            return;
+          }
+
+          let html = '';
+          data.forEach(item => {
+            const dataFormattata = item.created_at ? new Date(item.created_at).toLocaleDateString('it-IT') : '-';
+            const titolo = item.titolo_progetto || item.servizio || 'Richiesta Audit';
+            const stato = item.stato || 'In Attesa';
+
+            html += `
+              <div class="border border-slate-800 bg-slate-950/50 rounded-xl p-4 flex flex-col gap-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/60 pb-3">
+                  <div class="flex items-center gap-2">
+                    <p class="text-sm font-semibold text-white">${titolo}</p>
+                    <span class="px-2 py-0.5 text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">${stato}</span>
+                  </div>
+                  <span class="text-[10px] text-slate-500 font-mono">Data: ${dataFormattata}</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  <div><span class="text-slate-500">Servizio:</span> <span class="text-slate-300 font-medium">${item.servizio || '-'}</span></div>
+                  <div><span class="text-slate-500">Budget:</span> <span class="text-slate-300 font-medium">${item.budget || '-'}</span></div>
+                </div>
+                ${item.messaggio ? `
+                  <div class="text-xs bg-slate-900/80 p-2.5 rounded-lg border border-slate-800/80 text-slate-300">
+                    <span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Messaggio / Note:</span>
+                    ${item.messaggio}
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          });
+
+          container.innerHTML = html;
+
+        } catch (err) {
+          console.error('[Supabase Error]', err);
+          container.innerHTML = `<p class="text-xs text-rose-400">Errore durante il recupero dei dati.</p>`;
+        }
+      };
 
       const bootDashboard = async () => {
         try {
@@ -176,6 +246,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const avatarEl = $('#user-avatar');
             avatarEl.src = avatarUrl;
             avatarEl.classList.remove('hidden');
+          }
+
+          // Carica i dati da Supabase per l'utente loggato
+          if (email) {
+            await caricaProgettiSupabase(email);
           }
 
           // Gestione Logout
