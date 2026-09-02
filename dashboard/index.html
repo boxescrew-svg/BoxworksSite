@@ -34,9 +34,8 @@
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP7J56FC"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
-  <!-- Loading State (visibile prima dell'inizializzazione di Clerk) -->
+  <!-- Loading State -->
   <div id="dash-loading" class="fixed inset-0 bg-slate-950 flex items-center justify-center z-50">
     <div class="flex flex-col items-center gap-3">
       <div class="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -51,7 +50,6 @@
     <header class="border-b border-slate-800/80 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
-        <!-- Logo Boxworks -->
         <a href="/" class="flex items-center gap-3 text-white hover:opacity-80 transition-opacity">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960.99 1047.95" class="w-7 h-7 fill-current text-blue-500">
             <path d="M530,611.69l41.33,23.86,98.34,56.78,119.77,69.15,102.84,59.38C909,830.52,925.5,841,942.65,850c.24.12.47.27.7.4v-33.1l-36.31,21-87.22,50.36-106,61.19-90.92,52.49c-14.8,8.55-30.18,16.53-44.59,25.75l-.62.35,28.84,16.55V626.59c0-19.33.86-38.88,0-58.2,0-.26,0-.53,0-.8l-9.49,16.54,41.33-23.86,98.34-56.77,119.77-69.15L959.33,375c16.74-9.66,34.1-18.71,50.4-29.1l.7-.4-28.84-16.55v370c0,17.1-.78,34.41,0,51.49,0,.24,0,.48,0,.71l28.84-16.54L969.1,710.73,870.77,654,751,584.8,648.15,525.42c-16.74-9.66-33.24-20.19-50.4-29.1-.24-.12-.47-.27-.7-.4l9.49,16.55V94.14c0-19.33.85-38.88,0-58.2,0-.27,0-.54,0-.8L577.7,51.68l36.32,21L701.24,123l106,61.2,90.92,52.49c14.81,8.55,29.41,17.89,44.6,25.75.21.1.41.23.61.35V229.7L902,253.56l-98.33,56.77L683.91,379.48,581.07,438.86c-16.74,9.66-34.1,18.7,50.4,29.1l-.7.4h19.35L508,444.5l-98.34-56.77L289.87,318.57,187,259.2c-16.74-9.67-33.24-20.18-50.4-29.1-.24-.12-.46-.27-.7-.4v33.09l36.31-21,87.23-50.36,106-61.19,90.91-52.49C471.18,69.24,486.56,61.26,501,52c.2-.13.41-.24.61-.36L472.75,35.14V453.46c0,19.33-.87,38.88,0,58.2,0,.27,0,.54,0,.81l9.49-16.55-41.33,23.86-98.34,56.78L222.8,645.71,120,705.08c-16.75,9.67-34.1,18.71-50.4,29.1-.23.15-.47.27-.7.41l28.83,16.54v-370c0-17.09.79-34.4,0-51.49,0-.23,0-.47,0-.71L68.86,345.47l41.32,23.86,98.34,56.78L328.3,495.26l102.84,59.37c16.74,9.67,33.24,20.2,50.4,29.1.24.12.47.27.7.4l-9.49-16.54V985.91c0,19.34-.85,38.88,0,58.2,0,.27,0,.54,0,.81l28.83-16.55-36.31-21-87.22-50.36-106-61.19-90.92-52.49c-14.8-8.55-29.4-17.89-44.59-25.75-.21-.11-.41-.24-.62-.36v33.1l41.33-23.86,98.34-56.78,119.77-69.15L498.22,641.2c16.77-9.69,33.89-19,50.4-29.1.22-.14.46-.27.7-.41,8.68-5,12.46-17.55,6.87-26.22S539.26,573.23,530,578.6l-41.33,23.86L390.3,659.23,270.53,728.39,167.69,787.76c-16.78,9.69-33.9,19-50.4,29.1l-.7.4c-12.44,7.18-12.44,25.92,0,33.1l36.31,21,87.22,50.36,106,61.19,90.92,52.5c14.84,8.57,29.52,17.57,44.59,25.74l.62.36c12.57,7.26,28.84-2,28.84-16.55V625.22c0-19,.75-38.07,0-57-.47-11.59-7.32-15.92-15.59-20.7l-25.34-14.63-93.46-54-119.17-68.8L149.87,348,91,314l-2.75-1.59c-12.57-7.26-28.84,2-28.84,16.55v370c0,17.14-.48,34.36,0,51.49,0,.24,0,.48,0,.71,0,14.59,16.27,23.81,28.84,16.55l41.33-23.86,99.17-57.25,119.79-69.16,103.19-59.58c16.4-9.47,33.35-18.36,49.36-28.5,9.75-6.17,10-14.37,10-23.9V35.14c0-14.59-16.27-23.81-28.84-16.55l-36.31,21L358.71,89.91l-106,61.19L161.8,203.59c-14.84,8.57-30,16.75-44.6,25.75l-.61.36c-12.44,7.17-12.44,25.91,0,33.09l41.33,23.86,98.33,56.78L376,412.58,478.87,472c16.78,9.68,33.38,19.83,50.4,29.09.24.13.47.27.7.41a19.38,19.38,0,0,0,19.35,0l41.32-23.86L689,420.82l119.78-69.15L911.6,292.29c16.77-9.68,33.89-19,50.4-29.09l.7-.41c12.43-7.18,12.43-25.92,0-33.09l-36.31-21-87.22-50.36-106-61.19L642.26,44.69c-14.85-8.57-29.52-17.58-44.59-25.75l-.62-.35c-12.57-7.26-28.84,2-28.84,16.55v419.7c0,18.94-.76,38.06,0,57,.47,11.59,7.31,15.92,15.59,20.69l25.34,14.63,93.46,54,119.17,68.8,107.65,62.16,58.91,34,2.76,1.59c12.57,7.26,28.83-2,28.83-16.55v-370c0-17.14.49-34.35,0-51.49v-.71c0-14.58-16.26-23.81-28.83-16.55l-41.33,23.86-99.17,57.26L730.8,462.65,627.61,522.22c-16.4,9.48-33.35,18.37-49.36,28.5-9.75,6.18-10,14.38-10,23.9v470.3c0,14.58,16.27,23.81,28.84,16.55l36.31-21,87.22-50.35,106-61.2,90.92-52.49c14.84-8.57,30-16.75,44.59-25.74.2-.13.41-.24.62-.36,12.43-7.18,12.43-25.92,0-33.1L921.37,793.4,823,736.63,703.26,667.48,600.42,608.1C583.63,598.41,567,588.26,550,579l-.69-.4c-8.69-5-21.37-2.31-26.23,6.87S520.7,606.34,530,611.69Z" transform="translate(-59.15 -16.05)"/>
@@ -94,39 +92,64 @@
         </a>
       </div>
 
-      <!-- Grid Sezioni Dashboard -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Grid Sezioni Dashboard (items-start per evitare allungamenti indesiderati) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         
-        <!-- Scheda: I Miei Progetti (2 colonne su schermi grandi) -->
+        <!-- Sinistra: Storico Progetti (con Paginazione) -->
         <div class="lg:col-span-2 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 space-y-4">
           <div class="flex items-center justify-between">
             <h2 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">I Miei Progetti & Audit</h2>
-            <span class="text-xs text-slate-500">Aggiornato in tempo reale</span>
+            <span id="project-count" class="text-xs text-slate-500">Aggiornato in tempo reale</span>
           </div>
 
-          <!-- Contenitore Progetti Dinamici da Supabase -->
-          <div id="projects-container" class="space-y-3">
+          <!-- Contenitore Progetti Dinamici -->
+          <div id="projects-container" class="space-y-3 min-h-[120px]">
             <p class="text-xs text-slate-400 animate-pulse">Caricamento progetti da Supabase...</p>
+          </div>
+
+          <!-- Controlli Paginazione -->
+          <div id="pagination-controls" class="hidden flex items-center justify-between border-t border-slate-800 pt-4 mt-4">
+            <button id="btn-prev-page" class="px-3 py-1.5 text-xs text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed">
+              ← Precedente
+            </button>
+            <span id="page-indicator" class="text-xs text-slate-400 font-mono">Pagina 1 di 1</span>
+            <button id="btn-next-page" class="px-3 py-1.5 text-xs text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed">
+              Successivo →
+            </button>
           </div>
         </div>
 
-        <!-- Scheda: Info Profilo & Supporto -->
-        <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 space-y-4">
-          <h2 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">Dettagli Account</h2>
-          <div class="space-y-3 text-xs">
-            <div class="flex justify-between py-2 border-b border-slate-800">
-              <span class="text-slate-400">Email:</span>
-              <span id="info-email" class="text-slate-200 font-mono"></span>
-            </div>
-            <div class="flex justify-between py-2 border-b border-slate-800">
-              <span class="text-slate-400">ID Utente:</span>
-              <span id="info-id" class="text-slate-200 font-mono text-[10px]"></span>
-            </div>
-            <div class="flex justify-between py-2 border-b border-slate-800">
-              <span class="text-slate-400">Stato:</span>
-              <span class="text-emerald-400 font-medium">Verificato</span>
+        <!-- Destra: Dettagli Account e Pannello Risorse Esterne -->
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 space-y-6">
+          
+          <!-- Sezione Dettagli Account -->
+          <div class="space-y-4">
+            <h2 class="text-sm font-semibold text-slate-200 tracking-wider uppercase border-b border-slate-800 pb-2">Dettagli Account</h2>
+            <div class="space-y-3 text-xs">
+              <div class="flex justify-between py-1 border-b border-slate-800/60">
+                <span class="text-slate-400">Email:</span>
+                <span id="info-email" class="text-slate-200 font-mono"></span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-800/60">
+                <span class="text-slate-400">ID Utente:</span>
+                <span id="info-id" class="text-slate-200 font-mono text-[10px]"></span>
+              </div>
+              <div class="flex justify-between py-1">
+                <span class="text-slate-400">Stato:</span>
+                <span class="text-emerald-400 font-medium">Verificato</span>
+              </div>
             </div>
           </div>
+
+          <!-- Sezione Risorse esterne (Nascosta se non ci sono link) -->
+          <div id="resources-section" class="hidden space-y-3 pt-2 border-t border-slate-800">
+            <h2 class="text-sm font-semibold text-slate-200 tracking-wider uppercase">Risorse & Collegamenti</h2>
+            <p class="text-[11px] text-slate-400">Documentazione e spazi di lavoro condivisi per i tuoi progetti:</p>
+            <div id="resources-list" class="flex flex-col gap-2 pt-1">
+              <!-- I pulsanti verranno inseriti dinamicamente via JS se gli URL esistono -->
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -139,8 +162,7 @@
     </footer>
 
   </div>
-
-  <!-- Script Inizializzazione Clerk & Supabase per Dashboard -->
+  <!-- Script Inizializzazione Clerk & Supabase -->
   <script>
     (() => {
       'use strict';
@@ -152,7 +174,174 @@
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhqb3Fsc2RkZHhocmZ5bndseWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyNjU4MDYsImV4cCI6MjEwMzg0MTgwNn0.3khGptusOIFLBJ9NlDbtjevEKKwc-c9OqI2vZKKcE6A';
       const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      // Carica i progetti da Supabase filtrati per l'email dell'utente
+      // Stato Paginazione
+      let progettiUtente = [];
+      let paginaCorrente = 1;
+      const ELEMENTI_PER_PAGINA = 3; // Modifica questo valore per gestire quanti progetti mostrare per pagina
+
+      // Renderizza i pulsanti delle risorse nel pannello di destra con SVG vettoriali inline
+      const renderizzaRisorse = (progetti) => {
+        const container = $('#resources-list');
+        const section = $('#resources-section');
+        container.innerHTML = '';
+
+        // Raccoglie tutti gli URL trovati nei record dell'utente
+        let links = {
+          pdf: null,
+          figma: null,
+          notion: null,
+          github: null,
+          website: null
+        };
+
+        progetti.forEach(item => {
+          if (item.pdf_url) links.pdf = item.pdf_url;
+          if (item.figma_url) links.figma = item.figma_url;
+          if (item.notion_url) links.notion = item.notion_url;
+          if (item.github_url) links.github = item.github_url;
+          if (item.website_url) links.website = item.website_url;
+        });
+
+        let trovati = 0;
+
+// 1. Documenti PDF (Logo Adobe ufficiale in SVG Inline)
+        if (links.pdf) {
+          trovati++;
+          container.innerHTML += `
+            <a href="${links.pdf}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between px-3 py-2 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-xs text-rose-300 transition-colors group">
+              <span class="flex items-center gap-2.5 font-medium">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 217" fill="none">
+                  <path d="M161.2 0H256v216.3L161.2 0zM94.8 0H0v216.3L94.8 0zm33.1 82.7L189.2 216.3h-44.5l-21.7-54.8H88.3l39.6-78.8z" fill="#FF0000"/>
+                </svg>
+                Documenti & PDF
+              </span>
+              <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>`;
+        }
+
+        // 2. Figma (Multicolore ufficiale)
+        if (links.figma) {
+          trovati++;
+          container.innerHTML += `
+            <a href="${links.figma}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between px-3 py-2 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-xs text-slate-200 transition-colors group">
+              <span class="flex items-center gap-2.5 font-medium">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 38 57" fill="none">
+                  <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
+                  <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
+                  <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
+                  <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E"/>
+                  <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF"/>
+                </svg>
+                Workspace Figma
+              </span>
+              <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>`;
+        }
+
+// 3. Workspace Notion (Logo cubo ufficiale con sfondo invertito per dark mode)
+        if (links.notion) {
+          trovati++;
+          container.innerHTML += `
+            <a href="${links.notion}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between px-3 py-2 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-xs text-slate-200 transition-colors group">
+              <span class="flex items-center gap-2.5 font-medium">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg" alt="Notion" class="w-4 h-4 object-contain invert shrink-0" />
+                Workspace Notion
+              </span>
+              <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>`;
+        }
+
+        // 4. GitHub
+        if (links.github) {
+          trovati++;
+          container.innerHTML += `
+            <a href="${links.github}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between px-3 py-2 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-xs text-slate-200 transition-colors group">
+              <span class="flex items-center gap-2.5 font-medium">
+                <svg class="w-4 h-4 fill-current text-slate-300 shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                Repository GitHub
+              </span>
+              <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>`;
+        }
+
+        // 5. Sito Web
+        if (links.website) {
+          trovati++;
+          container.innerHTML += `
+            <a href="${links.website}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between px-3 py-2 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-xs text-sky-300 transition-colors group">
+              <span class="flex items-center gap-2.5 font-medium">
+                <svg class="w-4 h-4 fill-current text-sky-400 shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                Anteprima Sito Web
+              </span>
+              <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>`;
+        }
+
+        // Mostra il blocco risorse solo se almeno un link è presente
+        if (trovati > 0) {
+          section.classList.remove('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      };
+
+      // Mostra la pagina di progetti selezionata
+      const renderizzaPaginaProgetti = () => {
+        const container = $('#projects-container');
+        const totalPagine = Math.ceil(progettiUtente.length / ELEMENTI_PER_PAGINA) || 1;
+
+        const inizio = (paginaCorrente - 1) * ELEMENTI_PER_PAGINA;
+        const fine = inizio + ELEMENTI_PER_PAGINA;
+        const progettiPagina = progettiUtente.slice(inizio, fine);
+
+        let html = '';
+        progettiPagina.forEach(item => {
+          const dataFormattata = item.created_at ? new Date(item.created_at).toLocaleDateString('it-IT') : '-';
+          const titolo = item.titolo_progetto || item.servizio || 'Richiesta Audit';
+          const stato = item.stato || 'In Attesa';
+
+          html += `
+            <div class="border border-slate-800 bg-slate-950/50 rounded-xl p-4 flex flex-col gap-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/60 pb-3">
+                <div class="flex items-center gap-2">
+                  <p class="text-sm font-semibold text-white">${titolo}</p>
+                  <span class="px-2 py-0.5 text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">${stato}</span>
+                </div>
+                <span class="text-[10px] text-slate-500 font-mono">Data: ${dataFormattata}</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div><span class="text-slate-500">Servizio:</span> <span class="text-slate-300 font-medium">${item.servizio || '-'}</span></div>
+                <div><span class="text-slate-500">Budget:</span> <span class="text-slate-300 font-medium">${item.budget || '-'}</span></div>
+              </div>
+              ${item.messaggio ? `
+                <div class="text-xs bg-slate-900/80 p-2.5 rounded-lg border border-slate-800/80 text-slate-300">
+                  <span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Messaggio / Note:</span>
+                  ${item.messaggio}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+
+        // Gestione Paginazione Visiva
+        const controls = $('#pagination-controls');
+        if (progettiUtente.length > ELEMENTI_PER_PAGINA) {
+          controls.classList.remove('hidden');
+          $('#page-indicator').textContent = `Pagina ${paginaCorrente} di ${totalPagine}`;
+          $('#btn-prev-page').disabled = paginaCorrente === 1;
+          $('#btn-next-page').disabled = paginaCorrente === totalPagine;
+        } else {
+          controls.classList.add('hidden');
+        }
+      };
+
+      // Carica i progetti da Supabase
       const caricaProgettiSupabase = async (userEmail) => {
         const container = $('#projects-container');
         try {
@@ -184,36 +373,14 @@
             return;
           }
 
-          let html = '';
-          data.forEach(item => {
-            const dataFormattata = item.created_at ? new Date(item.created_at).toLocaleDateString('it-IT') : '-';
-            const titolo = item.titolo_progetto || item.servizio || 'Richiesta Audit';
-            const stato = item.stato || 'In Attesa';
+          progettiUtente = data;
+          paginaCorrente = 1;
 
-            html += `
-              <div class="border border-slate-800 bg-slate-950/50 rounded-xl p-4 flex flex-col gap-3">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/60 pb-3">
-                  <div class="flex items-center gap-2">
-                    <p class="text-sm font-semibold text-white">${titolo}</p>
-                    <span class="px-2 py-0.5 text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">${stato}</span>
-                  </div>
-                  <span class="text-[10px] text-slate-500 font-mono">Data: ${dataFormattata}</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                  <div><span class="text-slate-500">Servizio:</span> <span class="text-slate-300 font-medium">${item.servizio || '-'}</span></div>
-                  <div><span class="text-slate-500">Budget:</span> <span class="text-slate-300 font-medium">${item.budget || '-'}</span></div>
-                </div>
-                ${item.messaggio ? `
-                  <div class="text-xs bg-slate-900/80 p-2.5 rounded-lg border border-slate-800/80 text-slate-300">
-                    <span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Messaggio / Note:</span>
-                    ${item.messaggio}
-                  </div>
-                ` : ''}
-              </div>
-            `;
-          });
+          // Renderizza progetti paginati
+          renderizzaPaginaProgetti();
 
-          container.innerHTML = html;
+          // Renderizza il pannello delle risorse
+          renderizzaRisorse(progettiUtente);
 
         } catch (err) {
           console.error('[Supabase Error]', err);
@@ -221,11 +388,27 @@
         }
       };
 
+      // Event Listener Paginazione
+      $('#btn-prev-page').addEventListener('click', () => {
+        if (paginaCorrente > 1) {
+          paginaCorrente--;
+          renderizzaPaginaProgetti();
+        }
+      });
+
+      $('#btn-next-page').addEventListener('click', () => {
+        const totalPagine = Math.ceil(progettiUtente.length / ELEMENTI_PER_PAGINA);
+        if (paginaCorrente < totalPagine) {
+          paginaCorrente++;
+          renderizzaPaginaProgetti();
+        }
+      });
+
+      // Avvio Applicazione
       const bootDashboard = async () => {
         try {
           await Clerk.load();
 
-          // Se l'utente NON è autenticato, reindirizza alla pagina di login
           if (!Clerk.user) {
             return location.replace('/login/');
           }
@@ -235,7 +418,7 @@
           const name = user.fullName || user.firstName || email.split('@')[0];
           const avatarUrl = user.imageUrl;
 
-          // Popola i dati dell'interfaccia
+          // Popola dati profilo
           $('#welcome-title').textContent = `Bentornato, ${name}`;
           $('#user-name').textContent = name;
           $('#user-email').textContent = email;
@@ -248,18 +431,17 @@
             avatarEl.classList.remove('hidden');
           }
 
-          // Carica i dati da Supabase per l'utente loggato
           if (email) {
             await caricaProgettiSupabase(email);
           }
 
-          // Gestione Logout
+          // Logout
           $('#btn-logout').addEventListener('click', async () => {
             await Clerk.signOut();
             location.replace('/login/');
           });
 
-          // Mostra l'applicazione e nascondi il loader
+          // Mostra interfaccia
           $('#dash-loading').classList.add('hidden');
           $('#dash-app').classList.remove('hidden');
 
