@@ -8,6 +8,8 @@
 
   <!-- Favicon SVG -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="script.js" type="text/Javascript">
 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -34,33 +36,6 @@
 
   <!-- Supabase JS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-
-    /* Wordmark identico alla Homepage: Inter 800, 1.15rem, tracking -0.5px */
-    .logo-wordmark {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #FFFFFF;
-    }
-    .logo-wordmark .accent { color: #D4A373; }
-
-    /* ── Sfondo animato: pattern a nido d'ape "a onda" come sulla Homepage, ── */
-    /* ── ma molto più tenue: è un'area privata, non una landing page.       ── */
-    #bg-honeycomb {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 0; pointer-events: none;
-    }
-    @media (max-width: 768px) {
-      #bg-honeycomb { display: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #bg-honeycomb { display: none; }
-    }
-  </style>
 </head>
 <body class="h-full bg-[#0B0C10] text-[#E5E7EB] font-sans flex flex-col justify-between antialiased">
   <!-- Google Tag Manager (noscript) -->
